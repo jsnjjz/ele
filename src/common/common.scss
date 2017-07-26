@@ -1,0 +1,19 @@
+@import 'mixin.scss';
+	
+	@media (-webkit-min-device-pixel-ratio: 2),(min-device-pixel-ratio: 2){
+		
+	.border1px {
+		&:after {
+			transform: scaleY(.5);
+		}
+	}
+  
+}
+
+@media (-webkit-min-device-pixel-ratio: 3),(min-device-pixel-ratio: 3){
+	.border1px {
+		&:after {
+			transform: scaleY(.7);
+		}
+	}
+}
