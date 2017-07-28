@@ -29,12 +29,12 @@ var seller = appData.seller
 var goods = appData.goods
 var ratings = appData.ratings
 
-var apiRoutes = express.Router()
+var apiRoutes = express.Router()   //注册
 
 apiRoutes.get('/seller',function(req,res){
   res.json({
     errno: 0,
-    seller: seller
+    data: seller
   });
 })
 
@@ -52,7 +52,7 @@ apiRoutes.get('/ratings', function (req, res) {
   })
 })
 
-app.use('/api', apiRoutes)
+app.use('/api', apiRoutes)   //注册
 
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
   publicPath: webpackConfig.output.publicPath,
