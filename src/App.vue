@@ -13,10 +13,6 @@
     	</div>
     </div>
     
-    
-    <start1 :seller1="seller"></start1>
-    
-    <test2 :seller333="seller"></test2>
 	 	<router-view></router-view>
   </div>
 </template>
@@ -24,14 +20,11 @@
 <script>
 	import iheader from "./components/header/header.vue";
 	
-	import start1 from "./components/start1/start1.vue";
-	
-	import test2 from "./components/test2/test2.vue"
 	export default {
 		name: 'app',
 		data(){                 //定义为函数  为了提高组件的复用
 			return {
-				seller: Object      //  ??为什么要指定类型  直接返回数据 ？
+				seller: Object      
 			};
 		},
 		//类似ajax获取数据  created 生命周期钩子  成功创建后执行方法
@@ -44,23 +37,16 @@
     },
 		components: {         //注册组件iheader
 			iheader: iheader,
-			start1: start1,
-			test2: test2
-		},
-		
-
-		
+		}
 	}
 </script>
 
 <style scoped lang="scss">
 	@import './common/common.scss';
-	
 	.tab {
-		margin-top: 134px;
 		display: flex;
 		height: 40px;
-/*		background: yellowgreen;*/
+		background: #fff;
 		line-height: 40px;
 		@include border1px(rgba(7,17,27,.1));
 		.tab-item {

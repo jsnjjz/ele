@@ -1,7 +1,7 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import Vue from 'vue'    //???指向
-import App from './App'   //???指向
+import Vue from 'vue'    
+import App from './App'   
 
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)     
@@ -34,10 +34,11 @@ const router = new VueRouter({
 })
 
 /* eslint-disable no-new */
+//根组件
 new Vue({
   el: '#app',
-  router,                //？？？？？
-  template: '<App/>',    //??????
-  components: { App }     //  已经定义了 el 挂载组件 是什么意思
+  router,                
+  template: '<App/>',    
+  components: { App }     //对应上面的  App组件 引入到 根组件里
 }).	$mount('#app');
 //挂载组件

@@ -1,15 +1,14 @@
 <template>
 	<div class="supports">
-<!--		<span class="icon" :class="classMap[index]"></span>-->
-<!--
+<!--		<span class="icon"  :class="classMap[0]"></span>-->
+<!--		{{supports[0].description}}-->
+
 	<ul>
 		<li v-for="(item,index) in supports">
-		<span class="icon" :class="classMap[supports[index].type]"></span>
-		{{item.description}}
+			<span class="icon" :class="classMap[supports[index].type]"></span>
+			<span>{{item.description}}</span>
 		</li>
 	</ul>
--->
-		{{supports[0].description}}
 	</div>
 </template>
 
@@ -35,6 +34,13 @@
 <style lang="scss" scoped>
 	@import '../../common/mixin.scss';
 	.supports {
+		ul {
+			li {
+				span {
+					vertical-align: middle;
+				}
+			}
+		}
 		.icon {
 			display: inline-block;
 			width: 12px;
@@ -42,6 +48,8 @@
 			background: url(invoice_1@2x.png);
 			background-size: cover;
 /*				background-image: url(decrease_1@2x.png);*/
+			
+			
 			&.decrease {
 				@include bgImage(decrease_1);
 			}
