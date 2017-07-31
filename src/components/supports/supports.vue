@@ -1,5 +1,5 @@
 <template>
-	<div class="supports">
+	<div class="supports" :class="[className]">
 <!--		<span class="icon"  :class="classMap[0]"></span>-->
 <!--		{{supports[0].description}}-->
 
@@ -18,7 +18,10 @@
 			props: {
 				supports: {
 					return: Array
-			}
+				},
+				className: {
+					return: String
+				}
 		},
 		
 			created(){
@@ -34,38 +37,67 @@
 <style lang="scss" scoped>
 	@import '../../common/mixin.scss';
 	.supports {
-		ul {
+
 			li {
 				span {
 					vertical-align: middle;
 				}
+				
+				.icon {
+					display: inline-block;
+					width: 12px;
+					height: 12px;
+					background: url(invoice_1@2x.png);
+					background-size: cover;
+					&.decrease {
+						@include bgImage(decrease_1);
+					}
+					&.discount {
+						@include bgImage(discount_1);
+					}
+					&.guarantee {
+						@include bgImage(guarantee_1);
+					}
+					&.invoice {
+						@include bgImage(invoice_1);
+					}
+					&.special {
+						@include bgImage(special_1);
+					}
+				}
+			}
+		
+		&.big {
+			li {
+				margin-bottom: 12px;
+				font-size: 12px;
+				line-height: 12px;
+				.icon {
+					width: 16px;
+					height: 16px;
+					margin-right: 6px;
+					&.decrease {
+						@include bgImage(decrease_2);
+					}
+					&.discount {
+						@include bgImage(discount_2);
+					}
+					&.guarantee {
+						@include bgImage(discount_2);
+					}
+					&.invoice {
+						@include bgImage(special_2);
+					}
+					&.special {
+						@include bgImage(special_2);
+					}
+				}
+				&:last-child {
+					margin-bottom: 0;
+				}
 			}
 		}
-		.icon {
-			display: inline-block;
-			width: 12px;
-			height: 12px;
-			background: url(invoice_1@2x.png);
-			background-size: cover;
-/*				background-image: url(decrease_1@2x.png);*/
-			
-			
-			&.decrease {
-				@include bgImage(decrease_1);
-			}
-			&.discount {
-				@include bgImage(discount_1);
-			}
-			&.guarantee {
-				@include bgImage(guarantee_1);
-			}
-			&.invoice {
-				@include bgImage(invoice_1);
-			}
-			&.special {
-				@include bgImage(special_1);
-			}
-		}
+	
 	}
 	
 </style>

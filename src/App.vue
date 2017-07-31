@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-   	<iheader :seller1="seller"></iheader>    <!--:seller1怎么传送过来的  是从下面  created传递过来的？？ -->
+   	<iheader :seller1="seller"></iheader>    
+   	
     <div class="tab  border1px">
     	<div class="tab-item">
     		 <router-link to="/goods">商品</router-link>
@@ -36,7 +37,7 @@
 
     },
 		components: {         //注册组件iheader
-			iheader: iheader,
+			iheader: iheader
 		}
 	}
 </script>
@@ -48,6 +49,7 @@
 		height: 40px;
 		background: #fff;
 		line-height: 40px;
+/*		border-bottom: 1px solid rgba(7,17,27,.1);*/
 		@include border1px(rgba(7,17,27,.1));
 		.tab-item {
 			flex: 1;

@@ -17,7 +17,7 @@ import goods from './components/goods/goods.vue'
 import ratings from './components/ratings/ratings.vue'
 import seller from './components/seller/seller.vue'
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false    //设置为 false 以阻止 vue 在启动时生成生产提示。
 
 //定义组件的路由 (类似映射表)
 const routes = [
@@ -27,8 +27,9 @@ const routes = [
   { path: '/seller', component: seller}
 ]
 
-//注册组件  实例
+//注册组件  实例化 这个类
 const router = new VueRouter({
+	mode: 'history',
   routes,// （缩写）相当于 routes: routes
 	linkActiveClass: 'active'   //设置class名为 active
 })

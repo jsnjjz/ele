@@ -1,23 +1,23 @@
 <template>
-	<div class="test3">
-		test3
-		{{test3.name}}
+	<div class="box">
+		{{seller11.name}}
 	</div>
 </template>
+
 
 <script>
 	export default {
 		props: {
-			test3: {
+			seller11: {
 				return: Object
 			}
 		}
 	}
 </script>
 
-
 <style scoped lang="scss">
-	.test3 {
+	.box {
 		font-size: 30px;
+		color: green;
 	}
 </style>

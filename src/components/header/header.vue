@@ -41,15 +41,36 @@
 			<div class="detail_wrapper" v-show="detailshow" @click="closeDetail">
 				<div class="detail">
 					<div class="txt_box">
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa magni molestias, maiores accusamus aperiam qui excepturi expedita sequi reiciendis assumenda repellendus quisquam voluptatibus, mollitia dolores explicabo sunt rem impedit tempora!</p>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa magni molestias, maiores accusamus aperiam qui excepturi expedita sequi reiciendis assumenda repellendus quisquam voluptatibus, mollitia dolores explicabo sunt rem impedit tempora!</p>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa magni molestias, maiores accusamus aperiam qui excepturi expedita sequi reiciendis assumenda repellendus quisquam voluptatibus, mollitia dolores explicabo sunt rem impedit tempora!</p>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa magni molestias, maiores accusamus aperiam qui excepturi expedita sequi reiciendis assumenda repellendus quisquam voluptatibus, mollitia dolores explicabo sunt rem impedit tempora!</p>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa magni molestias, maiores accusamus aperiam qui excepturi expedita sequi reiciendis assumenda repellendus quisquam voluptatibus, mollitia dolores explicabo sunt rem impedit tempora!</p>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa magni molestias, maiores accusamus aperiam qui excepturi expedita sequi reiciendis assumenda repellendus quisquam voluptatibus, mollitia dolores explicabo sunt rem impedit tempora!</p>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa magni molestias, maiores accusamus aperiam qui excepturi expedita sequi reiciendis assumenda repellendus quisquam voluptatibus, mollitia dolores explicabo sunt rem impedit tempora!</p>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa magni molestias, maiores accusamus aperiam qui excepturi expedita sequi reiciendis assumenda repellendus quisquam voluptatibus, mollitia dolores explicabo sunt rem impedit tempora!</p>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa magni molestias, maiores accusamus aperiam qui excepturi expedita sequi reiciendis assumenda repellendus quisquam voluptatibus, mollitia dolores explicabo sunt rem impedit tempora!</p>
+							<h2>{{seller1.name}}</h2>
+							
+							<div class="star-wrapper">
+								<istar :score="seller1.score" :size="24"></istar>
+<!--
+								<istar :score="seller1.score" :size="36"></istar>
+								<istar :score="seller1.score" :size="48"></istar>
+-->
+							</div>
+							
+							<div class="title">
+								<div class="line"></div>
+								<div class="text">优惠信息</div>
+								<div class="line"></div>
+							</div>
+							
+							<div class="supports_wrapper">
+									<!--加v-if 因为这个数据是异步加载进来的  开始时  他是个 空对象-->
+								<supports11 v-if="seller1.supports" :supports="seller1.supports" :className="big1"></supports11>
+							</div>
+							
+							<div class="title">
+								<div class="line"></div>
+								<div class="text">商家公告</div>
+								<div class="line"></div>
+							</div>
+							
+							<div class="bulletin">
+								{{seller1.bulletin}}
+							</div>
 					</div>
 					<div class="close">
 						<i class="iconfont icon-close"></i>
@@ -64,6 +85,8 @@
 <script>
 
 import supports from '../supports/supports.vue'
+import star from '../star/star.vue'
+	
 export default {
 	props: {
 		seller1: {
@@ -72,7 +95,8 @@ export default {
 	},
 	data () {
 		return {
-			detailshow: false
+			detailshow: false,
+			big1: "big"
 		}
 	},
 	methods: {
@@ -85,7 +109,8 @@ export default {
 		}
 	},
 	components: {
-		supports11: supports
+		supports11: supports,
+		istar: star
 	}
 }
 </script>
@@ -229,6 +254,45 @@ export default {
 					padding-bottom: 180px;
 					padding-left: 20px;
 					padding-right: 20px;
+					overflow: hidden;
+					color: #fff;
+					h2 {
+						margin-top: 64px;
+						line-height: 16px;
+						font-size: 16px;
+						font-weight: 700;
+						text-align: center;
+					}
+					.star-wrapper {
+						margin: 16px auto 0 auto;
+					}
+					.title {
+						display: flex;
+						margin-top: 28px;
+						margin-bottom: 24px;
+						.line {
+							position: relative;
+							top: -7px;
+							flex: 1;
+							border-bottom: 1px solid rgba(255,255,255,.2);							
+						}
+						.text {
+							padding: 0 12px;
+							line-height: 14px;
+							font-size: 14px;
+							font-weight: 700
+						}
+					}
+					
+					.bulletin {
+						margin-left: 12px;
+						margin-right: 12px;
+						font-size: 12px;
+						font-weight: 200;
+						line-height: 24px;
+					}
+					
+
 				}
 				.close {
 					position: absolute;
@@ -241,8 +305,6 @@ export default {
 			}
 
 		}
-		
-		
 		
 		.fade-enter-active, .fade-leave-active {
   		transition: opacity .5s
