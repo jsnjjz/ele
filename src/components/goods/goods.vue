@@ -1,8 +1,8 @@
 <template>
   <div class="goods">
-		<div class="menu-wrapper">
+		<div class="menu-wrapper" ref="menuWrapper">
 			<ul>
-				<li v-for="item in goods" class="menu-item">
+				<li v-for="(item,index) in goods" class="menu-item" :class="{'current':currentIndex === index}" @click="selectMenu(index,$event)">
 					<span class="text border1px">
 						<i class="icon"  v-if="item.type > 0" :class="classMap[item.type]"></i>
 						{{item.name}}
@@ -10,9 +10,9 @@
 				</li>
 			</ul>
 		</div>
-		<div class="goods-wrapper">
+		<div class="goods-wrapper" ref="foodWrapper">
 			<ul>
-				<li v-for="item in goods" class="list_title">
+				<li v-for="item in goods" class="list_title food-list-hook">
 					<h2>{{item.name}}</h2>
 					<ul>
 						<li v-for="food in item.foods">
@@ -30,25 +30,100 @@
 				</li>
 			</ul>
 		</div>
+		
+		<div class="shopcar_wrapper">
+			<shopcar>
+			
+			</shopcar>
+		</div>
+		
+		
+		
   </div>
 </template>
 
 <script>
+	import BScroll from "better-scroll"
+	
+	import shopcar from '../shopcar/shopcar.vue'
 //export   输出
 export default {
+
+components: {
+	shopcar:shopcar
+},
 	data() {
 		return {
-			goods: Array
+			goods: Array,
+			listHeight: [],
+			scrollY: 0
 		}
 	},
 	created (){
 		this.$http.get("/api/goods").then((response) => {
 			this.goods = response.body.data;
 //			console.log(this.goods);
+			
+			this.$nextTick(() => {
+				this._initScroll();
+				this._calculateHeight();
+//				this.currentIndex();
+			})
 		}),
 		this.classMap = ['decrease','discount','guarantee','invoice','special']
-	}
+	},
+	methods: {
+		_initScroll() {
+			this.menuScroll = new BScroll(this.$refs.menuWrapper, {
+				click: true
+			});
+			this.foodScroll = new BScroll(this.$refs.foodWrapper, {
+				probeType: 3
+			});
+			
+			this.foodScroll.on('scroll',(pos) => {
+				 this.scrollY = Math.abs(Math.floor(pos.y));
+//				console.log(this.scrollY);
+			})
+		},
+		_calculateHeight() {
+			let foodList = this.$refs.foodWrapper.getElementsByClassName('food-list-hook');    //类数组
+			let height = 0;
+			this.listHeight.push(height);
+			for (let i = 0; i < foodList.length; i++) {
+				let item = foodList[i];
+				height += item.clientHeight;
+				this.listHeight.push(height);
+			}
+//				console.log(this.listHeight); 
+		},
+		selectMenu(index,event){
+			if(!event._constructed){
+				return
+			}
+			console.log(event);
+			
+			let foodList = this.$refs.foodWrapper.getElementsByClassName('food-list-hook');
+			
+			let ele = foodList[index];
+			
+			this.foodScroll.scrollToElement(ele,300)
+		}
+		
+	},
+	computed: {
+		currentIndex(){
+			for(let i=0; i<this.listHeight.length; i++){
+				let height1 = this.listHeight[i];
+				let height2 = this.listHeight[i+1];
 
+				if(!height2 || (this.scrollY>=height1 && this.scrollY < height2)){
+					return i
+				}
+			}
+			return 0;
+		}
+	}
 }
 </script>
 
@@ -71,6 +146,12 @@ export default {
 				padding: 0 12px;
 				height: 54px;
 				width: 56px;
+				&.current {
+					z-index: 10;
+					margin-top: -1px;
+					background: green;
+					font-weight: 700
+				}
 				.text {
 					display: table-cell;
 					vertical-align: middle;
@@ -86,7 +167,6 @@ export default {
 						background-size: cover;
 						width: 14px;
 						height: 14px;
-/*						@include bgImage("special_3");*/
 						&.decrease {
 							@include bgImage(decrease_3);
 						}
@@ -138,6 +218,7 @@ export default {
 					}
 					.right_cont {
 						float: left;
+						max-width: calc(100% - 67px);
 						h4 {
 							margin-top: 2px;
 							line-height: 14px;
@@ -147,7 +228,7 @@ export default {
 						}
 						.desc {
 							margin-top: 8px;
-							line-height: 10px;
+							line-height: 14px;
 							font-size: 10px;
 							color: rgb(147,153,159);
 						}
@@ -181,6 +262,11 @@ export default {
 					}
 				}
 			}
+		}
+		
+		.shopcar_wrapper {
+			position: fixed;
+			background: hotpink;
 		}
 	}
 </style>

@@ -4,7 +4,7 @@
 			<img width="64" height="64" :src="seller1.avatar" alt="">
 			                           <!--:src 因为 seller1是一个 对象 需要对其做个判断-不为空时  就渲染-->
 			                           
-			<div class="box_right pull-right">
+			<div class="box_right">
 				<h2><span class="brand"></span><span>{{seller1.name}}</span></h2>
 				<p class="desc">
 					{{seller1.description}}/{{seller1.deliveryTime}}分钟送达
@@ -291,8 +291,6 @@ export default {
 						font-weight: 200;
 						line-height: 24px;
 					}
-					
-
 				}
 				.close {
 					position: absolute;
