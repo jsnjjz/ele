@@ -84,7 +84,7 @@
 			
 			&.type36{
 				.star-item{
-					margin-right: 20px;
+					margin-right: 6px;
 					width: 16px;
 					height: 16px;
 					&:last-child{
@@ -105,7 +105,7 @@
 			
 			&.type48{
 				.star-item{
-					margin-right: 10px;
+					margin-right: 4px;
 					width: 10px;
 					height: 10px;
 					&:last-child{

@@ -1,21 +1,21 @@
 <template>
 	<div class="shopcar">
 		<div class="content">
-			<div class="content-left enough">
+			<div class="content-left " :class="{'enough': totalCount>0}">
 				<div class="logo-wrapper">
 					<div class="logo-wrapper1">
 						<i class="iconfont icon-shopping_cart"></i>
 					</div>
 					<div class="count">
-						99
+						{{totalCount}}
 					</div>
 				</div>
-				<span class="money">¥ 0</span>
-				<span class="add">另需配送费4元</span>
+				<span class="money">¥ {{totalPrice}}</span>
+				<span class="add">另需配送费¥ {{delivery}}元</span>
 			</div>
 			
-			<div class="content-right enough">
-				还差20元起送
+			<div class="content-right" :class="{'enough': this.totalPrice >= minPrice}" >
+				{{pay}}
 			</div>
 		</div>
 	</div>
@@ -24,10 +24,56 @@
 <script>
 export default {
 	props: {
-		shopcar: {
-			return: Object
+
+		delivery: {
+			type: Number,
+			default: 0
+		},
+		minPrice: {
+			type: Number,
+			default: 0,
+//			return: Number
+		},
+		selectFoods: {     //用来模拟以后商品组件传来的数据
+			type: Array,
+			default (){
+				return [
+					{
+					price: 15,
+					count: 2
+					}
+				]
+			}
+		}
+	},
+	computed: {
+		totalPrice (){
+			let price = 0;
+			//将每个商品的单价 数量进行计算
+			this.selectFoods.forEach((goods) => {
+				price += goods.price * goods.count
+			})
+			return price
+		},
+		totalCount (){
+			let count = 0;
+			this.selectFoods.forEach((goods) => {
+				count += goods.count
+			})
+			return count
+		},
+		pay (){
+			if(this.totalCount === 0){
+				return `最低配送费¥${this.minPrice}元`
+			}else if(this.totalPrice < this.minPrice){
+				let diff = this.minPrice - this.totalPrice;
+				return `还差¥${diff}元`
+			}else {
+				return `去结算`
+			}
 		}
 	}
+	
 }
 </script>
 
@@ -77,6 +123,7 @@ export default {
 						position: absolute;
 						top: 0;
 						right: 0;
+/*						padding: 5px;*/
 						width: 25px;
 						height: 15px;
 						text-align: center;
@@ -119,6 +166,7 @@ export default {
 					}
 				}
 				
+/*
 				&.not_reached {
 					background: #08121c;
 					.logo-wrapper {
@@ -134,6 +182,7 @@ export default {
 						color: #fff;
 					}
 				}
+*/
 				
 			}
 			.content-right {
@@ -146,10 +195,6 @@ export default {
 				font-weight: 700;
 				background: #2b333b;
 				&.enough {
-					background: #00b43c;
-					color: #fff;
-				}
-				&.not_reached {
 					background: #00b43c;
 					color: #fff;
 				}

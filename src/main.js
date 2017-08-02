@@ -21,7 +21,7 @@ Vue.config.productionTip = false    //设置为 false 以阻止 vue 在启动时
 
 //定义组件的路由 (类似映射表)
 const routes = [
-//	{ path: '/', redirect: '/goods'},      //redirect 重定向  表示默认渲染的元素
+	{ path: '/', redirect: '/goods'},      //redirect 重定向  表示默认渲染的元素
   { path: '/goods', component: goods },
   { path: '/ratings', component: ratings },
   { path: '/seller', component: seller}

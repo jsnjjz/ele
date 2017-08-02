@@ -24,6 +24,10 @@
 									<p class="count">月售{{food.sellCount}}份 好评率{{food.rating}}%</p>
 									<p class="price">¥<span class="now">{{food.price}}</span><span class="old" v-if="food.oldPrice">¥ <strong>{{food.oldPrice}}</strong></span></p>
 								</div>
+								
+								<div class="carcontrol-wrap">
+									<carcontrol :food="food"></carcontrol>
+								</div>
 							</div>
 						</li>
 					</ul>
@@ -32,7 +36,7 @@
 		</div>
 		
 		<div class="shopcar_wrapper">
-			<shopcar>
+			<shopcar :delivery="seller.deliveryPrice" :minPrice="seller.minPrice" :selectFoods="selectFoods">
 			
 			</shopcar>
 		</div>
@@ -46,15 +50,25 @@
 	import BScroll from "better-scroll"
 	
 	import shopcar from '../shopcar/shopcar.vue'
+	
+	import carcontrol from '../carcontrol/carcontrol.vue'
 //export   输出
 export default {
 
 components: {
-	shopcar:shopcar
+	shopcar: shopcar,
+	carcontrol: carcontrol
+	
 },
+	props: {
+		seller: {
+			return: Object
+		}
+	},
+
 	data() {
 		return {
-			goods: Array,
+			goods: [],
 			listHeight: [],
 			scrollY: 0
 		}
@@ -78,7 +92,8 @@ components: {
 				click: true
 			});
 			this.foodScroll = new BScroll(this.$refs.foodWrapper, {
-				probeType: 3
+				probeType: 3,
+				click: true
 			});
 			
 			this.foodScroll.on('scroll',(pos) => {
@@ -122,7 +137,23 @@ components: {
 				}
 			}
 			return 0;
+		},
+		
+		selectFoods (){
+			let foodList = [];
+			//this.goods = data
+			this.goods.forEach((item) => {
+				//item.foods = foods
+				item.foods.forEach((food) => {
+					//如果有count值 就push到foodList
+					if(food.count){
+						foodList.push(food);
+					}
+				})
+			})
+			return foodList
 		}
+		
 	}
 }
 </script>
@@ -201,6 +232,7 @@ components: {
 				li+li {
 					.box_cont {
 						border-top: 1px solid grey;
+						
 					}
 				}
 				li {
@@ -208,6 +240,16 @@ components: {
 					.box_cont {
 						padding-bottom: 18px;
 						padding-top: 18px;
+						position: relative;
+						
+						.carcontrol-wrap {
+							position: absolute;
+							right: 2px;
+							bottom: 14px;
+							width: 74px;
+							height: 20px;
+						}
+						
 					}
 					img {
 						float: left;
@@ -265,8 +307,10 @@ components: {
 		}
 		
 		.shopcar_wrapper {
+/*
 			position: fixed;
 			background: hotpink;
+*/
 		}
 	}
 </style>
