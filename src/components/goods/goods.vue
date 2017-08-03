@@ -17,12 +17,14 @@
 					<ul>
 						<li v-for="food in item.foods">
 							<div class="clearfix box_cont">
-								<img :src="food.icon" alt="">
-								<div class="right_cont">
-									<h4>{{food.name}}</h4>
-									<p class="desc">{{food.description}}</p>
-									<p class="count">月售{{food.sellCount}}份 好评率{{food.rating}}%</p>
-									<p class="price">¥<span class="now">{{food.price}}</span><span class="old" v-if="food.oldPrice">¥ <strong>{{food.oldPrice}}</strong></span></p>
+								<div class="list_btn">
+									<img :src="food.icon" alt="">
+									<div class="right_cont">
+										<h4>{{food.name}}</h4>
+										<p class="desc">{{food.description}}</p>
+										<p class="count">月售{{food.sellCount}}份 好评率{{food.rating}}%</p>
+										<p class="price">¥<span class="now">{{food.price}}</span><span class="old" v-if="food.oldPrice">¥ <strong>{{food.oldPrice}}</strong></span></p>
+									</div>
 								</div>
 								
 								<div class="carcontrol-wrap">
@@ -116,7 +118,7 @@ components: {
 			if(!event._constructed){
 				return
 			}
-			console.log(event);
+//			console.log(event);
 			
 			let foodList = this.$refs.foodWrapper.getElementsByClassName('food-list-hook');
 			

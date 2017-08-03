@@ -11,6 +11,8 @@ import VueResource from 'vue-resource';
 Vue.use(VueResource);
 //注册／安装 VueResource script src="../resource.js"
 
+import VueAwesomeSwiper from 'vue-awesome-swiper';
+Vue.use(VueAwesomeSwiper);
 
 //组件
 import goods from './components/goods/goods.vue'

@@ -42,19 +42,19 @@
 			<div class="assess_cont">
 				<div class="desc_box">
 					<div class="desc">
-						<span>全部 {{all.length}}</span>
-						<span>满意 {{highScore.length}}</span>
-						<span>不满意 {{lowScore.length}}</span>
+						<span @click="whole">全部 {{all.length}}</span>
+						<span @click="hight">满意 {{highScore.length}}</span>
+						<span @click="low">不满意 {{lowScore.length}}</span>
 					</div>
 
-					<div class="filter" @click="seen = !seen" :class="{'active': seen}">
+					<div class="filter" @click="show"  :class="{'active': seen}">
 						<i class="iconfont icon-check_circle"></i>
 						<span>只看有内容的评价</span>
 					</div>
 				</div>
 				<div class="cont_box">
 					<ul>
-<!--					seen ? v-for="item in ratings" : v-for="item in box"-->
+
 						<li v-for="item in ratings">
 							<div class="ava pull-left">
 								<img :src="item.avatar" alt="">
@@ -74,6 +74,30 @@
 								</div>
 							</div>
 						</li>
+						
+						
+<!--
+						<li v-show="seen" v-for="item in box">
+							<div class="ava pull-left">
+								<img :src="item.avatar" alt="">
+							</div>
+							<div class="cont pull-left">
+								<p class="name">{{item.username}} <span>2016-07-13 20:33</span></p>
+								<div class="del_time">
+									<istar :score="item.score" :size="48"></istar><span>{{item.deliveryTime}}<i v-if="item.deliveryTime" style="font-style: normal">分钟送达</i></span>
+								</div>
+								<p class="comment">{{item.text}}</p>
+								<div class="type">
+									<i v-if="item.score > 3" class="iconfont icon-thumb_up" style="color: rgb(0,160,220)"></i>
+									<i v-else class="iconfont icon-thumb_down"></i>
+									<div class="btn">
+										<span v-for="list in item.recommend">{{list}}</span>
+									</div>
+								</div>
+							</div>
+						</li>
+-->
+						
 					</ul>
 				</div>
 				
@@ -81,7 +105,12 @@
 		</div>
 		
 
-			
+<!--
+		<div class="shopcar_wrapper">
+			<shopcar :delivery="seller.deliveryPrice" :minPrice="seller.minPrice" :selectFoods="selectFoods">
+			</shopcar>
+		</div>
+-->
 				
 		
 		
@@ -91,34 +120,74 @@
 <script>
 	import star from '../star/star.vue'
 	
+	import shopcar from '../shopcar/shopcar.vue'
+	
 export default {
 	props: {
 		seller: {
-			return: Object
+			return: []
 		}
 	},
 	components: {
-		istar: star
+		istar: star,
+		shopcar: shopcar
 	},
 	
 	data() {
 		return {
+			goods:[],	
 			ratings: [],
+			ratings1: [],
 			all: [],
 			highScore: [],
 			lowScore: [],
 			seen: false,
-			box: []
+			box: [],
+			sta: 1
 		}
 	},
 	methods: {
-//		change (){
-//			this.box = this.ratings
-//		}
+		show (){
+//			this.seen = !this.seen;
+			if(this.sta == 1){
+				this.ratings = this.box;
+				this.sta = 0;
+				this.seen = true;
+//				console.log(this.seen)
+			}else if(this.sta == 0){
+				this.ratings = this.ratings1;
+				this.sta = 1;
+				this.seen = false;
+//				console.log(this.seen);
+			}
+		},
+		whole (){
+			this.ratings = this.ratings1;
+			this.seen = false;
+			this.sta = 1;
+//			console.log(this.seen)
+		},
+		hight (){
+//			let arr2 = [];
+//			this.ratings1.forEach((item) => {
+//				if(item.score >= 4){
+//					arr2.push(item);
+//				}
+//			})
+			this.ratings = this.highScore;
+			this.seen = false;
+			this.sta = 1;
+//			console.log(this.seen)
+		},
+		low (){
+			this.ratings = this.lowScore;
+			this.seen = false;
+			this.sta = 1;
+//			console.log(this.seen)
+		}
 	},
 	
 	created (){
-		let arrTmp = [];
 		this.$http.get("/api/ratings").then((response) => {
 			this.ratings = response.body.data;
 			this.ratings.forEach((item) => {
@@ -126,12 +195,12 @@ export default {
 			});
 			this.ratings.forEach((item) => {
 				if(item.score > 3){
-					this.highScore.push(item.score);
+					this.highScore.push(item);
 				}
 			});
 			this.ratings.forEach((item) => {
 				if(item.score <= 3){
-					this.lowScore.push(item.score);
+					this.lowScore.push(item);
 				}
 			});
 			
@@ -139,10 +208,33 @@ export default {
 				if(item.text){
 					this.box.push(item);
 				}
-			})
+			});
 			
-		})	
-	}
+			
+			this.ratings1 = this.ratings;
+			
+			
+		})
+//		this.$http.get("/api/goods").then((response) => {
+//			this.goods = response.body.data;
+//		})
+	},
+//		computed:{
+//				selectFoods (){
+//				let foodList = [];
+//				//this.goods = data
+//				this.goods.forEach((item) => {
+//					//item.foods = foods
+//					item.foods.forEach((food) => {
+//						//如果有count值 就push到foodList
+//						if(food.count){
+//							foodList.push(food);
+//						}
+//					})
+//				})
+//				return foodList
+//			}
+//		}
 	
 }
 </script>
@@ -290,13 +382,16 @@ export default {
 			.cont_box {
 				padding-left: 18px;
 				padding-right: 18px;
+/*
 				li+li {
 					border-top: 1px solid #e6e7e8;
 				}
+*/
 				li {
 					padding-top: 18px;
 					padding-bottom: 18px;
 					overflow: hidden;
+					border-bottom: 1px solid #e6e7e8;
 					.ava {
 						margin-right: 12px;
 						img {
@@ -370,5 +465,10 @@ export default {
 			}
 		}
 	}
+		.shopcar_wrapper {
+			position: fixed;
+			bottom: 0;
+			left: 0;
+		}
 }
 </style>

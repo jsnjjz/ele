@@ -59,7 +59,7 @@
 	.cartcontrol {
 		position: relative;
 		width: 74px;
-		background: yellowgreen;
+/*		background: yellowgreen;*/
 		>div {
 			display: inline-block;
 			vertical-align: middle;
