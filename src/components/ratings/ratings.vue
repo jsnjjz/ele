@@ -1,5 +1,5 @@
 <template>
-  <div class="ratings">
+  <div class="ratings"  ref="menuWrapper">
 		<div class="box">
 			
 			<div class="top_score">
@@ -47,7 +47,7 @@
 						<span @click="low">不满意 {{lowScore.length}}</span>
 					</div>
 
-					<div class="filter" @click="show"  :class="{'active': seen}">
+					<div class="filter"  @click="show" :class="{'active': seen}">
 						<i class="iconfont icon-check_circle"></i>
 						<span>只看有内容的评价</span>
 					</div>
@@ -122,6 +122,8 @@
 	
 	import shopcar from '../shopcar/shopcar.vue'
 	
+	import BScroll from "better-scroll"
+	
 export default {
 	props: {
 		seller: {
@@ -132,6 +134,17 @@ export default {
 		istar: star,
 		shopcar: shopcar
 	},
+	
+	
+	watch:{
+		"ratings"(){
+			this._initScroll();
+		}
+	},
+//	mounted(){
+//		this._initScroll();
+//	},
+	
 	
 	data() {
 		return {
@@ -145,47 +158,10 @@ export default {
 			box: [],
 			sta: 1
 		}
-	},
-	methods: {
-		show (){
-//			this.seen = !this.seen;
-			if(this.sta == 1){
-				this.ratings = this.box;
-				this.sta = 0;
-				this.seen = true;
-//				console.log(this.seen)
-			}else if(this.sta == 0){
-				this.ratings = this.ratings1;
-				this.sta = 1;
-				this.seen = false;
-//				console.log(this.seen);
-			}
-		},
-		whole (){
-			this.ratings = this.ratings1;
-			this.seen = false;
-			this.sta = 1;
-//			console.log(this.seen)
-		},
-		hight (){
-//			let arr2 = [];
-//			this.ratings1.forEach((item) => {
-//				if(item.score >= 4){
-//					arr2.push(item);
-//				}
-//			})
-			this.ratings = this.highScore;
-			this.seen = false;
-			this.sta = 1;
-//			console.log(this.seen)
-		},
-		low (){
-			this.ratings = this.lowScore;
-			this.seen = false;
-			this.sta = 1;
-//			console.log(this.seen)
-		}
-	},
+	},	
+	
+	
+
 	
 	created (){
 		this.$http.get("/api/ratings").then((response) => {
@@ -209,34 +185,73 @@ export default {
 					this.box.push(item);
 				}
 			});
-			
-			
+	
 			this.ratings1 = this.ratings;
-			
-			
+		
 		})
-//		this.$http.get("/api/goods").then((response) => {
-//			this.goods = response.body.data;
-//		})
+
+			this.$nextTick(() => {
+				this._initScroll();
+			})
+			
 	},
-//		computed:{
-//				selectFoods (){
-//				let foodList = [];
-//				//this.goods = data
-//				this.goods.forEach((item) => {
-//					//item.foods = foods
-//					item.foods.forEach((food) => {
-//						//如果有count值 就push到foodList
-//						if(food.count){
-//							foodList.push(food);
-//						}
-//					})
-//				})
-//				return foodList
-//			}
-//		}
+	
+	
+	
+	methods: {
+		show (){
+//			this.seen = !this.seen;
+			if(this.sta == 1){
+				this.ratings = this.box;
+				this.sta = 0;
+				this.seen = true;
+			}else if(this.sta == 0){
+				this.ratings = this.ratings1;
+				this.sta = 1;
+				this.seen = false;
+			}
+			console.log(this.seen);
+		},
+		whole (){
+			this.ratings = this.ratings1;
+			this.seen = false;
+			this.sta = 1;
+			console.log(this.seen);
+		},
+		hight (){
+//			let arr2 = [];
+//			this.ratings1.forEach((item) => {
+//				if(item.score >= 4){
+//					arr2.push(item);
+//				}
+//			})
+			this.ratings = this.highScore;
+			this.seen = false;
+			this.sta = 1;
+		},
+		low (){
+			this.ratings = this.lowScore;
+			this.seen = false;
+			this.sta = 1;
+		},
+
+			_initScroll(){
+				this.$nextTick(()=>{
+//					console.log(this.$refs.menuWrapper);
+					this.menuScroll = new BScroll(this.$refs.menuWrapper, {
+//						probeType: 3,
+						click: true,
+						preventDefault: true
+					});
+				})
+			}
+		
+	}
+
 	
 }
+	
+	
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -244,6 +259,13 @@ export default {
 	@import '../../common/mixin.scss';
 	.ratings {
 		background: #f3f5f7;
+		position: absolute;
+		top:183px;
+		bottom: 0;
+		left: 0;
+		right: 0;
+/*		height: 400px;*/
+		overflow: hidden;
 		.top_score {
 			width: 100%;
 			padding-top: 18px;

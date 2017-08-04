@@ -43,12 +43,14 @@
 				<div class="seller_pic">
 					<h2>商家实景</h2>
 					<div id="box">
+<!--
 						<swiper :options="swiperOption">
 							<swiper-slide v-for="item in seller.pics" class="iPic">
 								<img v-if="seller.pics" :src="item" alt="" class="iImg">
 							</swiper-slide>
 							<div class="swiper-pagination" slot="pagination"></div>
 						</swiper>		
+-->
 					</div>
 				</div>
 
@@ -97,30 +99,30 @@
 				return {
 				big1: "big_seller",
 				seen1: false,
-				swiperOption: {
-//          pagination: '.swiper-pagination',
-          paginationClickable: true,
-          slidesPerView: 5,
-          spaceBetween: 50,
-          breakpoints: {
-            1024: {
-              slidesPerView: 4,
-              spaceBetween: 12
-            },
-            768: {
-              slidesPerView: 2.5,
-              spaceBetween: 0
-            },
-             640: {
-              slidesPerView: 2.5,
-              spaceBetween: 0
-            },
-            320: {
-              slidesPerView: 2,
-              spaceBetween: 0
-            }
-          }
-        }
+//				swiperOption: {
+////          pagination: '.swiper-pagination',
+//          paginationClickable: true,
+//          slidesPerView: 5,
+//          spaceBetween: 50,
+//          breakpoints: {
+//            1024: {
+//              slidesPerView: 4,
+//              spaceBetween: 12
+//            },
+//            768: {
+//              slidesPerView: 2.5,
+//              spaceBetween: 0
+//            },
+//             640: {
+//              slidesPerView: 2.5,
+//              spaceBetween: 0
+//            },
+//            320: {
+//              slidesPerView: 2,
+//              spaceBetween: 0
+//            }
+//          }
+//        }
 			}
 		},
 		watch:{

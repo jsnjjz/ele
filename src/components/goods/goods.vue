@@ -10,12 +10,13 @@
 				</li>
 			</ul>
 		</div>
+		
 		<div class="goods-wrapper" ref="foodWrapper">
 			<ul>
 				<li v-for="item in goods" class="list_title food-list-hook">
 					<h2>{{item.name}}</h2>
 					<ul>
-						<li v-for="food in item.foods">
+						<li v-for="food in item.foods" @click="selectFood(food)">
 							<div class="clearfix box_cont">
 								<div class="list_btn">
 									<img :src="food.icon" alt="">
@@ -27,6 +28,7 @@
 									</div>
 								</div>
 								
+
 								<div class="carcontrol-wrap">
 									<carcontrol :food="food"></carcontrol>
 								</div>
@@ -36,6 +38,11 @@
 				</li>
 			</ul>
 		</div>
+<!--
+		<div class="details_wrapper">
+			<details1 :food="selectOneFood" ref="food"></details1>
+		</div>
+-->
 		
 		<div class="shopcar_wrapper">
 			<shopcar :delivery="seller.deliveryPrice" :minPrice="seller.minPrice" :selectFoods="selectFoods">
@@ -44,7 +51,7 @@
 		</div>
 		
 		
-		
+		<food :food="selectOneFood" ref="food"></food>
   </div>
 </template>
 
@@ -54,13 +61,17 @@
 	import shopcar from '../shopcar/shopcar.vue'
 	
 	import carcontrol from '../carcontrol/carcontrol.vue'
+	import food from '../food/food.vue'
+	
+	import details from '../details/details.vue'
 //export   输出
 export default {
 
 components: {
 	shopcar: shopcar,
-	carcontrol: carcontrol
-	
+	carcontrol: carcontrol,
+	details1: details,
+	food
 },
 	props: {
 		seller: {
@@ -72,7 +83,8 @@ components: {
 		return {
 			goods: [],
 			listHeight: [],
-			scrollY: 0
+			scrollY: 0,
+			selectOneFood:{}
 		}
 	},
 	created (){
@@ -89,6 +101,10 @@ components: {
 		this.classMap = ['decrease','discount','guarantee','invoice','special']
 	},
 	methods: {
+		selectFood(food){
+			this.selectOneFood = food;
+//			this.$refs.food.style.display = "block"
+		},
 		_initScroll() {
 			this.menuScroll = new BScroll(this.$refs.menuWrapper, {
 				click: true
@@ -125,6 +141,10 @@ components: {
 			let ele = foodList[index];
 			
 			this.foodScroll.scrollToElement(ele,300)
+		},
+		
+		test (){
+			alert("1");
 		}
 		
 	},
@@ -314,5 +334,14 @@ components: {
 			background: hotpink;
 */
 		}
+		
+		.details_wrapper {
+			position: fixed;
+			left: 0;
+			top: 0;
+			width: 100%;
+			background: #f3f5f7;
+		}
+		
 	}
 </style>

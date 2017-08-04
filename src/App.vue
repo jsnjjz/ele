@@ -26,7 +26,7 @@
 		name: 'app',
 		data(){                 //定义为函数  为了提高组件的复用
 			return {
-				seller: Object      
+				seller: Object,
 			};
 		},
 		//类似ajax获取数据  created 生命周期钩子  成功创建后执行方法
@@ -34,6 +34,7 @@
       this.$http.get('/api/seller').then(response => {
         this.seller = response.body.data;
 //        console.log(this.seller.name);
+
       });
 
     },
