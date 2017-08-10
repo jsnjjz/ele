@@ -42,7 +42,7 @@
 
 				<div class="seller_pic">
 					<h2>商家实景</h2>
-					<div id="box">
+					<div id="box" ref="picWrapper">
 <!--
 						<swiper :options="swiperOption">
 							<swiper-slide v-for="item in seller.pics" class="iPic">
@@ -51,6 +51,11 @@
 							<div class="swiper-pagination" slot="pagination"></div>
 						</swiper>		
 -->
+						<ul ref="picList">
+							<li v-for="item in seller.pics">
+								<img v-if="seller.pics" :src="item" alt="" class="iImg">
+							</li>
+						</ul>
 					</div>
 				</div>
 
@@ -132,6 +137,20 @@
 		},
 		mounted(){
 			this._initScroll();
+			if(this.seller.pics){
+				let picWidth = 120;
+				let margin = 6;
+				let width = (picWidth + margin) * this.seller.pics.length - margin;
+				this.$refs.picList.style.width = width + "px";
+				
+				this.$nextTick( () => {
+					this.scroll = new BScroll(this.$refs.picWrapper,{
+						click: true,
+						scrollX: true,
+//						eventPassthrough: 'vertical' //指定横向还是竖向
+					})
+				})
+			}
 		},
 		created (){
 			this.$nextTick(() => {
@@ -278,6 +297,14 @@
 				.iImg {
 					width: 120px;
 					height: 90px;
+				}
+				ul {
+					white-space: nowrap;
+/*					width: 700px;*/
+				}
+				li {
+					display: inline-block;
+					margin-right: 6px;
 				}
 			}
 		}

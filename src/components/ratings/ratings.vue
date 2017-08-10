@@ -39,7 +39,13 @@
 				</div>
 			</div>
 			
+
+			
+			
+			
+
 			<div class="assess_cont">
+<!--
 				<div class="desc_box">
 					<div class="desc">
 						<span @click="whole">全部 {{all.length}}</span>
@@ -52,15 +58,18 @@
 						<span>只看有内容的评价</span>
 					</div>
 				</div>
+-->
+			
+			<ratingselect :desc="desc" :ratings="ratings" :selectType = "selectType" :onlyContent = "onlyContent"></ratingselect>
 				<div class="cont_box">
 					<ul>
 
-						<li v-for="item in ratings">
+						<li v-for="item in ratings" v-show="needShow(item.rateType,item.text)" class="rating-item">
 							<div class="ava pull-left">
 								<img :src="item.avatar" alt="">
 							</div>
 							<div class="cont pull-left">
-								<p class="name">{{item.username}} <span>2016-07-13 20:33</span></p>
+								<p class="name">{{item.username}} <span>{{format(item.rateTime)}}</span></p>
 								<div class="del_time">
 									<istar :score="item.score" :size="48"></istar><span>{{item.deliveryTime}}<i v-if="item.deliveryTime" style="font-style: normal">分钟送达</i></span>
 								</div>
@@ -102,6 +111,7 @@
 				</div>
 				
 			</div>
+			
 		</div>
 		
 
@@ -124,6 +134,8 @@
 	
 	import BScroll from "better-scroll"
 	
+	import ratingselect from '../ratingselect/ratingselect.vue'
+	
 export default {
 	props: {
 		seller: {
@@ -132,13 +144,25 @@ export default {
 	},
 	components: {
 		istar: star,
-		shopcar: shopcar
+		shopcar: shopcar,
+		ratingselect: ratingselect
 	},
 	
 	
 	watch:{
 		"ratings"(){
 			this._initScroll();
+		},
+		"selectType"(type){
+			this.selectType = type;
+			this.$nextTick( () => {
+				this.menuScroll.refresh();
+			})
+		},
+		'onlyContent'(onlyContent){
+			this.$nextTick(() => {
+				this.menuScroll.refresh();
+			})
 		}
 	},
 //	mounted(){
@@ -156,7 +180,14 @@ export default {
 			lowScore: [],
 			seen: false,
 			box: [],
-			sta: 1
+			sta: 1,
+			desc: {
+				all: "全部",
+				positive: "满意",
+				negative: "不满意"
+			},
+			selectType: 2,
+			onlyContent: false
 		}
 	},	
 	
@@ -190,9 +221,7 @@ export default {
 		
 		})
 
-			this.$nextTick(() => {
-				this._initScroll();
-			})
+		this._initScroll();
 			
 	},
 	
@@ -241,9 +270,32 @@ export default {
 					this.menuScroll = new BScroll(this.$refs.menuWrapper, {
 //						probeType: 3,
 						click: true,
-						preventDefault: true
+//						preventDefault: true
 					});
 				})
+			},
+		
+		needShow(type,text){
+				if(this.onlyContent && !text){
+					return false
+				}
+				if(this.selectType === 2){
+					return true
+				}else {
+					//type       rating.type
+					return type === this.selectType
+				}
+			},
+		
+		format(date){
+				var date = new Date(date);//如果date为13位不需要乘1000
+				var Y = date.getFullYear() + '-';
+				var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+				var D = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate()) + ' ';
+				var h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+				var m = (date.getMinutes() <10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+				var s = (date.getSeconds() <10 ? '0' + date.getSeconds() : date.getSeconds());
+				return Y+M+D+h+m+s;
 			}
 		
 	}
@@ -267,6 +319,7 @@ export default {
 /*		height: 400px;*/
 		overflow: hidden;
 		.top_score {
+			
 			width: 100%;
 			padding-top: 18px;
 			padding-bottom: 18px;

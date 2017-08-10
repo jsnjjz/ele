@@ -16,7 +16,7 @@
 				<li v-for="item in goods" class="list_title food-list-hook">
 					<h2>{{item.name}}</h2>
 					<ul>
-						<li v-for="food in item.foods" @click="selectFood(food)">
+						<li v-for="food in item.foods" @click="choiceFood(food,$event)">
 							<div class="clearfix box_cont">
 								<div class="list_btn">
 									<img :src="food.icon" alt="">
@@ -50,8 +50,9 @@
 			</shopcar>
 		</div>
 		
-		
-		<food :food="selectOneFood" ref="food"></food>
+		<div class="food_wrapper">
+			<food :food="selectOneFood" ref="food"></food>
+		</div>
   </div>
 </template>
 
@@ -61,16 +62,15 @@
 	import shopcar from '../shopcar/shopcar.vue'
 	
 	import carcontrol from '../carcontrol/carcontrol.vue'
+	
 	import food from '../food/food.vue'
 	
-	import details from '../details/details.vue'
 //export   输出
 export default {
 
 components: {
 	shopcar: shopcar,
 	carcontrol: carcontrol,
-	details1: details,
 	food
 },
 	props: {
@@ -101,10 +101,15 @@ components: {
 		this.classMap = ['decrease','discount','guarantee','invoice','special']
 	},
 	methods: {
-		selectFood(food){
+		choiceFood(food,event){
+			if(!event._constructed){
+				return
+			};
 			this.selectOneFood = food;
-//			this.$refs.food.style.display = "block"
+			this.$refs.food.show();
+//			console.log(food.name)
 		},
+		
 		_initScroll() {
 			this.menuScroll = new BScroll(this.$refs.menuWrapper, {
 				click: true
@@ -202,7 +207,7 @@ components: {
 				&.current {
 					z-index: 10;
 					margin-top: -1px;
-					background: green;
+					background: #fff;
 					font-weight: 700
 				}
 				.text {
@@ -268,8 +273,10 @@ components: {
 							position: absolute;
 							right: 2px;
 							bottom: 14px;
-							width: 74px;
+/*
+							min-width: 74px;
 							height: 20px;
+*/
 						}
 						
 					}
@@ -328,14 +335,8 @@ components: {
 			}
 		}
 		
-		.shopcar_wrapper {
-/*
-			position: fixed;
-			background: hotpink;
-*/
-		}
 		
-		.details_wrapper {
+		.food_wrapper {
 			position: fixed;
 			left: 0;
 			top: 0;
